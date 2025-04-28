@@ -1,3 +1,4 @@
+import 'package:evently/ui/splash/screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,6 +16,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
+      routes: {SplashScreen.routeName: (_) => const SplashScreen()},
+      initialRoute: SplashScreen.routeName,
     );
   }
 }
