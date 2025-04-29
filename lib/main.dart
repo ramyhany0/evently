@@ -1,4 +1,7 @@
+import 'package:evently/core/resources/AppStyle.dart';
+import 'package:evently/core/resources/ColorManager.dart';
 import 'package:evently/ui/splash/screen/splash_screen.dart';
+import 'package:evently/ui/start/screen/start_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,11 +15,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      themeMode: ThemeMode.system,
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      routes: {SplashScreen.routeName: (_) => const SplashScreen()},
+      theme: AppStyle.LightTheme,
+      darkTheme: AppStyle.DarkTheme,
+      routes: {
+        SplashScreen.routeName: (_) => const SplashScreen(),
+        StartScreen.routeName: (_) => const StartScreen(),
+      },
       initialRoute: SplashScreen.routeName,
     );
   }
