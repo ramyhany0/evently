@@ -15,14 +15,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      themeMode: ThemeMode.system,
+      themeMode: AppStyle.themeMode,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: AppStyle.LightTheme,
       darkTheme: AppStyle.DarkTheme,
       routes: {
-        SplashScreen.routeName: (_) => const SplashScreen(),
-        StartScreen.routeName: (_) => const StartScreen(),
+        SplashScreen.routeName: (_) => SplashScreen(),
+        StartScreen.routeName: (_) => StartScreen(),
       },
       initialRoute: SplashScreen.routeName,
     );

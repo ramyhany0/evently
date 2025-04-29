@@ -2,6 +2,7 @@ import 'package:evently/core/resources/ColorManager.dart';
 import 'package:flutter/material.dart';
 
 class AppStyle {
+  static ThemeMode themeMode = ThemeMode.light;
   static ThemeData LightTheme = ThemeData(
     scaffoldBackgroundColor: ColorManager.lightBackground,
     appBarTheme: AppBarTheme(
@@ -11,6 +12,7 @@ class AppStyle {
     colorScheme: ColorScheme.fromSeed(
       seedColor: Colors.deepPurple,
       primary: ColorManager.blue,
+      onPrimary: Colors.white,
       secondary: ColorManager.black,
       tertiary: ColorManager.red,
       brightness: Brightness.light,
@@ -42,6 +44,7 @@ class AppStyle {
     colorScheme: ColorScheme.fromSeed(
       seedColor: Colors.deepPurple,
       primary: ColorManager.blue,
+      onPrimary: Colors.black,
       secondary: ColorManager.white,
       tertiary: ColorManager.red,
       brightness: Brightness.dark,

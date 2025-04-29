@@ -1,12 +1,21 @@
+import 'package:evently/core/resources/AppStyle.dart';
 import 'package:evently/core/resources/AssetManager.dart';
 import 'package:evently/core/resources/StringManager.dart';
 import 'package:evently/core/reusable_components/CustomButton.dart';
+import 'package:evently/core/reusable_components/CustomSwitch.dart';
 import 'package:flutter/material.dart';
 
-class StartScreen extends StatelessWidget {
+class StartScreen extends StatefulWidget {
   static const String routeName = 'start';
 
-  const StartScreen({super.key});
+  @override
+  State<StartScreen> createState() => _StartScreenState();
+}
+
+class _StartScreenState extends State<StartScreen> {
+  int selectedLanguage = 0;
+
+  int selectedTheme = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +49,7 @@ class StartScreen extends StatelessWidget {
             ),
             SizedBox(height: 28),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   Stringmanager.language,
@@ -47,16 +57,43 @@ class StartScreen extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
+                Customswitch(
+                  item1: Assetmanager.us,
+                  item2: Assetmanager.eg,
+                  selected: selectedLanguage,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedLanguage = value;
+                    });
+                  },
+                ),
               ],
             ),
             SizedBox(height: 20),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   Stringmanager.theme,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
+                ),
+                Customswitch(
+                  item1: Assetmanager.sun,
+                  item2: Assetmanager.moon,
+                  isColored: true,
+                  selected: selectedTheme,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedTheme = value;
+                      if (selectedTheme == 1) {
+                        AppStyle.themeMode = ThemeMode.dark;
+                      } else {
+                        AppStyle.themeMode = ThemeMode.light;
+                      }
+                    });
+                  },
                 ),
               ],
             ),
