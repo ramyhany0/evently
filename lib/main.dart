@@ -1,11 +1,21 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/resources/AppStyle.dart';
 import 'package:evently/core/resources/ColorManager.dart';
 import 'package:evently/ui/splash/screen/splash_screen.dart';
 import 'package:evently/ui/start/screen/start_screen.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  runApp(
+    EasyLocalization(
+      supportedLocales: [Locale("en"), Locale("ar")],
+      path: 'assets/translations',
+      fallbackLocale: Locale("en"),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -17,6 +27,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       themeMode: AppStyle.themeMode,
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       title: 'Flutter Demo',
       theme: AppStyle.LightTheme,
       darkTheme: AppStyle.DarkTheme,
