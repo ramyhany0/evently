@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/resources/AppStyle.dart';
 import 'package:evently/core/resources/AssetManager.dart';
 import 'package:evently/core/resources/StringManager.dart';
@@ -16,9 +17,10 @@ class _StartScreenState extends State<StartScreen> {
   int selectedLanguage = 0;
 
   int selectedTheme = 0;
-
+  @override
   @override
   Widget build(BuildContext context) {
+    selectedLanguage = context.locale.languageCode == "ar" ? 1 : 0;
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(Assetmanager.logoBar, height: 50, width: 150),
@@ -39,12 +41,12 @@ class _StartScreenState extends State<StartScreen> {
             ),
             SizedBox(height: 28),
             Text(
-              Stringmanager.startTitle,
+              Stringmanager.startTitle.tr(),
               style: Theme.of(context).textTheme.titleMedium,
             ),
             SizedBox(height: 28),
             Text(
-              Stringmanager.startDesc,
+              Stringmanager.startDesc.tr(),
               style: Theme.of(context).textTheme.bodySmall,
             ),
             SizedBox(height: 28),
@@ -52,7 +54,7 @@ class _StartScreenState extends State<StartScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  Stringmanager.language,
+                  Stringmanager.language.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
@@ -64,6 +66,11 @@ class _StartScreenState extends State<StartScreen> {
                   onChanged: (value) {
                     setState(() {
                       selectedLanguage = value;
+                      if (value == 1) {
+                        context.setLocale(Locale("ar"));
+                      } else {
+                        context.setLocale(Locale("en"));
+                      }
                     });
                   },
                 ),
@@ -74,7 +81,7 @@ class _StartScreenState extends State<StartScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  Stringmanager.theme,
+                  Stringmanager.theme.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
@@ -98,7 +105,7 @@ class _StartScreenState extends State<StartScreen> {
               ],
             ),
             SizedBox(height: 28),
-            Custombutton(title: Stringmanager.begin, onClicked: () {}),
+            Custombutton(title: Stringmanager.begin.tr(), onClicked: () {}),
 
             // Navigate to the next screen
           ],
