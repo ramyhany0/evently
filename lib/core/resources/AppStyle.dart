@@ -2,7 +2,7 @@ import 'package:evently/core/resources/ColorManager.dart';
 import 'package:flutter/material.dart';
 
 class AppStyle {
-  static ThemeMode themeMode = ThemeMode.light;
+  // static ThemeMode themeMode = ThemeMode.light;
   static ThemeData LightTheme = ThemeData(
     scaffoldBackgroundColor: ColorManager.lightBackground,
     appBarTheme: AppBarTheme(

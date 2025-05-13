@@ -5,6 +5,9 @@ import 'package:evently/core/resources/StringManager.dart';
 import 'package:evently/core/reusable_components/CustomButton.dart';
 import 'package:evently/core/reusable_components/CustomSwitch.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../core/PrefsManager.dart';
+import '../../../providers/ThemeProvider.dart';
 
 class StartScreen extends StatefulWidget {
   static const String routeName = 'start';
@@ -18,9 +21,10 @@ class _StartScreenState extends State<StartScreen> {
 
   int selectedTheme = 0;
   @override
-  @override
   Widget build(BuildContext context) {
+    ThemeProvider provider = Provider.of<ThemeProvider>(context);
     selectedLanguage = context.locale.languageCode == "ar" ? 1 : 0;
+    selectedTheme = provider.themeMode == ThemeMode.dark ? 1 : 0;
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(Assetmanager.logoBar, height: 50, width: 150),
@@ -95,9 +99,11 @@ class _StartScreenState extends State<StartScreen> {
                     setState(() {
                       selectedTheme = value;
                       if (selectedTheme == 1) {
-                        AppStyle.themeMode = ThemeMode.dark;
+                        provider.changeTheme(ThemeMode.dark);
+                        PrefsManager.saveThemeMode(true);
                       } else {
-                        AppStyle.themeMode = ThemeMode.light;
+                        provider.changeTheme(ThemeMode.light);
+                        PrefsManager.saveThemeMode(false);
                       }
                     });
                   },
