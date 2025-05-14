@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CustomField extends StatelessWidget {
+class CustomField extends StatefulWidget {
   String? Function(String?) validation;
   TextEditingController controller;
   String hint;
@@ -21,16 +21,27 @@ class CustomField extends StatelessWidget {
   });
 
   @override
+  State<CustomField> createState() => _CustomFieldState();
+}
+
+class _CustomFieldState extends State<CustomField> {
+  late bool isHidden;
+  void initState() {
+    super.initState();
+    isHidden = widget.obscure;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: validation,
-      controller: controller,
+      validator: widget.validation,
+      controller: widget.controller,
       style: Theme.of(context).textTheme.titleSmall,
-      keyboardType: keyboard,
-      obscureText: obscure,
+      keyboardType: widget.keyboard,
+      obscureText: isHidden,
       decoration: InputDecoration(
         hintStyle: Theme.of(context).textTheme.titleSmall,
-        hintText: hint,
+        hintText: widget.hint,
         prefixIconConstraints: BoxConstraints(
           minWidth: 24,
           minHeight: 24,
@@ -56,7 +67,7 @@ class CustomField extends StatelessWidget {
         prefixIcon: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SvgPicture.asset(
-            prefixPath,
+            widget.prefixPath,
             height: 32,
             width: 32,
             colorFilter: ColorFilter.mode(
@@ -65,6 +76,20 @@ class CustomField extends StatelessWidget {
             ),
           ),
         ),
+        suffixIcon:
+            widget.obscure
+                ? IconButton(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  onPressed: () {
+                    setState(() {
+                      isHidden = !isHidden;
+                    });
+                  },
+                  icon: Icon(
+                    isHidden ? Icons.visibility_off : Icons.visibility,
+                  ),
+                )
+                : null,
       ),
     );
   }

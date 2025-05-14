@@ -32,13 +32,13 @@ class _SplashScreenState extends State<SplashScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Spacer(),
-            Image.asset(Assetmanager.Logo)
+            Image.asset(AssetManager.Logo)
                 .animate()
                 .slideX(duration: Duration(milliseconds: 800))
                 .then()
                 .scale(begin: Offset(0.5, 0.5)),
             Spacer(),
-            Image.asset(Assetmanager.Branding),
+            Image.asset(AssetManager.Branding),
           ],
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:evently/core/resources/AssetManager.dart';
 import 'package:evently/core/resources/StringManager.dart';
 import 'package:evently/core/reusable_components/CustomButton.dart';
 import 'package:evently/core/reusable_components/CustomSwitch.dart';
+import 'package:evently/ui/login/screen/login_screen.dart';
 import 'package:evently/ui/register/screen/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +30,7 @@ class _StartScreenState extends State<StartScreen> {
     selectedTheme = provider.themeMode == ThemeMode.dark ? 1 : 0;
     return Scaffold(
       appBar: AppBar(
-        title: Image.asset(Assetmanager.logoBar, height: 50, width: 150),
+        title: Image.asset(AssetManager.logoBar, height: 50, width: 150),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 28),
@@ -39,8 +40,8 @@ class _StartScreenState extends State<StartScreen> {
             Expanded(
               child: Image.asset(
                 Theme.of(context).colorScheme.brightness == Brightness.dark
-                    ? Assetmanager.startDark
-                    : Assetmanager.startLight,
+                    ? AssetManager.startDark
+                    : AssetManager.startLight,
                 width: double.infinity,
                 fit: BoxFit.fill,
               ),
@@ -66,8 +67,8 @@ class _StartScreenState extends State<StartScreen> {
                   ),
                 ),
                 Customswitch(
-                  item1: Assetmanager.us,
-                  item2: Assetmanager.eg,
+                  item1: AssetManager.us,
+                  item2: AssetManager.eg,
                   selected: selectedLanguage,
                   onChanged: (value) {
                     setState(() {
@@ -93,8 +94,8 @@ class _StartScreenState extends State<StartScreen> {
                   ),
                 ),
                 Customswitch(
-                  item1: Assetmanager.sun,
-                  item2: Assetmanager.moon,
+                  item1: AssetManager.sun,
+                  item2: AssetManager.moon,
                   isColored: true,
                   selected: selectedTheme,
                   onChanged: (value) {
@@ -116,10 +117,7 @@ class _StartScreenState extends State<StartScreen> {
             Custombutton(
               title: StringManager.begin.tr(),
               onClicked: () {
-                Navigator.pushReplacementNamed(
-                  context,
-                  RegisterScreen.routeName,
-                );
+                Navigator.pushReplacementNamed(context, LoginScreen.routeName);
               },
             ),
 

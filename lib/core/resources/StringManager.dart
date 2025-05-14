@@ -9,7 +9,10 @@ abstract final class StringManager {
   static const String email = "email";
   static const String password = "password";
   static const String rePassword = "rePassword";
-  static const String createAcc = "Create Account";
-  static const String alreadyHaveAcc = "Already Have Account ?";
+  static const String createAcc = "createAcc";
+  static const String alreadyHaveAcc = "alreadyHaveAcc";
   static const String login = "login";
+  static const String dontHaveAcc = "dontHaveAcc";
+  static const String forgetpassword = "forgetpassword";
+  static const String resetpass = "resetpass";
 }

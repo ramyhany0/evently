@@ -6,10 +6,13 @@
   "letsStart": "Let’s Start",
   "register": "Register",
   "name": "Name",
-    "email": "Email",
-    "password": "Password",
-    "rePassword": "Re Password",
-    "createAcc": "Create Account" ,
-    "alreadyHaveAcc": "Already Have Account ?",
-    "login": "Login"
+  "email": "Email",
+  "password": "Password",
+  "rePassword": "Re Password",
+  "createAcc": "Create Account",
+  "alreadyHaveAcc": "Already Have Account ?",
+  "login": "Login",
+  "dontHaveAcc": "Don’t Have Account ?",
+  "forgetpassword": "Forget Password?",
+  "resetpass": "Reset Password"
 }

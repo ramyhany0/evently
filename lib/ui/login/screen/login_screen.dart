@@ -1,54 +1,48 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:evently/core/DialogUtils.dart';
-import 'package:evently/core/resources/AssetManager.dart';
-import 'package:evently/core/resources/constants.dart';
-import 'package:evently/core/reusable_components/CustomButton.dart';
-import 'package:evently/core/reusable_components/CustomField.dart';
-import 'package:evently/ui/login/screen/login_screen.dart';
+import 'package:evently/ui/home/screen/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/DialogUtils.dart';
+import '../../../core/resources/AssetManager.dart';
 import '../../../core/resources/StringManager.dart';
-import '../../home/screen/home_screen.dart';
+import '../../../core/resources/constants.dart';
+import '../../../core/reusable_components/CustomButton.dart';
+import '../../../core/reusable_components/CustomField.dart';
+import '../../forget_pass/screen/forget_pass_screen.dart';
+import '../../register/screen/register_screen.dart';
 
-class RegisterScreen extends StatefulWidget {
-  static const String routeName = 'register';
+class LoginScreen extends StatefulWidget {
+  static const String routeName = 'login';
 
-  const RegisterScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
-  late TextEditingController nameController;
+class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
-  late TextEditingController repasswordController;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
-    repasswordController = TextEditingController();
   }
 
   @override
   void dispose() {
     super.dispose();
-    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
-    repasswordController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(StringManager.register.tr())),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -58,20 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 Image.asset(AssetManager.Logo),
                 SizedBox(height: 28),
-                CustomField(
-                  keyboard: TextInputType.name,
-                  validation: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Should not be empty";
-                    } else {
-                      return null;
-                    }
-                  },
-                  controller: nameController,
-                  hint: StringManager.name.tr(),
-                  prefixPath: AssetManager.person,
-                ),
-                SizedBox(height: 16),
+
                 CustomField(
                   keyboard: TextInputType.emailAddress,
                   validation: (value) {
@@ -102,27 +83,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   hint: StringManager.password.tr(),
                   prefixPath: AssetManager.lock,
                 ),
-                SizedBox(height: 16),
-                CustomField(
-                  keyboard: TextInputType.visiblePassword,
-                  validation: (value) {
-                    if (value != passwordController.text) {
-                      return "Password not match";
-                    }
-                  },
-                  controller: repasswordController,
-                  obscure: true,
-                  hint: StringManager.rePassword.tr(),
-                  prefixPath: AssetManager.lock,
+
+                TextButton(
+                  onPressed: () {},
+                  child: Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          ForgetPassScreen.routeName,
+                        );
+                      },
+                      child: Text(
+                        StringManager.forgetpassword.tr(),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                          decoration: TextDecoration.underline,
+                          decorationColor:
+                              Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 14),
                 Container(
                   width: double.infinity,
                   child: Custombutton(
-                    title: StringManager.createAcc.tr(),
+                    title: StringManager.login.tr(),
                     onClicked: () {
                       if (formKey.currentState?.validate() ?? false) {
-                        signup();
+                        login();
                       }
                     },
                   ),
@@ -132,15 +124,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      StringManager.alreadyHaveAcc.tr(),
+                      StringManager.dontHaveAcc.tr(),
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context, LoginScreen.routeName);
+                        Navigator.pushNamed(context, RegisterScreen.routeName);
                       },
                       child: Text(
-                        StringManager.login.tr(),
+                        StringManager.createAcc.tr(),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context).colorScheme.primary,
                           decoration: TextDecoration.underline,
@@ -159,43 +151,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  signup() async {
+  login() async {
     try {
       DialogUtils.showLoadingDialog(context);
-      UserCredential credential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-            email: emailController.text,
-            password: passwordController.text,
-          );
-      Navigator.pop(context);
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        HomeScreen.routeName,
-        (route) => false,
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
       );
+      Navigator.pop(context);
+      Navigator.pushReplacementNamed(context, HomeScreen.routeName);
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
-      if (e.code == 'weak-password') {
+      if (e.code == 'user-not-found') {
         DialogUtils.showMessageDialog(
           context: context,
-          message: "The password provided is too weak.",
-          posTitle: "OK",
+          message: "No user found for that email.",
+          posTitle: "Ok",
           posClick: () {
             Navigator.pop(context);
           },
         );
-      } else if (e.code == 'email-already-in-use') {
+      } else if (e.code == 'wrong-password') {
         DialogUtils.showMessageDialog(
           context: context,
-          message: "The account already exists for that email.",
-          posTitle: "OK",
+          message: "Wrong password provided for that user.",
+          posTitle: "Ok",
           posClick: () {
             Navigator.pop(context);
           },
         );
       }
-    } catch (error) {
-      print(error.toString());
     }
   }
 }

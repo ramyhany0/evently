@@ -5,15 +5,21 @@ import 'package:evently/providers/ThemeProvider.dart';
 import 'package:evently/ui/register/screen/register_screen.dart';
 import 'package:evently/ui/splash/screen/splash_screen.dart';
 import 'package:evently/ui/start/screen/start_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'core/PrefsManager.dart';
+import 'ui/forget_pass/screen/forget_pass_screen.dart';
+import 'ui/home/screen/home_screen.dart';
+import 'ui/login/screen/login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await PrefsManager.init();
   bool isDark = PrefsManager.getThemeMode();
   ThemeMode mode = isDark ? ThemeMode.dark : ThemeMode.light;
@@ -50,8 +56,14 @@ class MyApp extends StatelessWidget {
         SplashScreen.routeName: (_) => SplashScreen(),
         StartScreen.routeName: (_) => StartScreen(),
         RegisterScreen.routeName: (_) => RegisterScreen(),
+        LoginScreen.routeName: (_) => LoginScreen(),
+        ForgetPassScreen.routeName: (_) => ForgetPassScreen(),
+        HomeScreen.routeName: (_) => HomeScreen(),
       },
-      initialRoute: RegisterScreen.routeName,
+      initialRoute:
+          FirebaseAuth.instance.currentUser != null
+              ? StartScreen.routeName
+              : HomeScreen.routeName,
     );
   }
 }
