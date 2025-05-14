@@ -3,5 +3,13 @@
   "startDesc": "Choose your preferred theme and language to get started with a comfortable, tailored experience that suits your style.",
   "language": "Language",
   "theme": "Theme",
-  "letsStart": "Let’s Start"
+  "letsStart": "Let’s Start",
+  "register": "Register",
+  "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "rePassword": "Re Password",
+    "createAcc": "Create Account" ,
+    "alreadyHaveAcc": "Already Have Account ?",
+    "login": "Login"
 }

@@ -4,6 +4,7 @@ import 'package:evently/core/resources/AssetManager.dart';
 import 'package:evently/core/resources/StringManager.dart';
 import 'package:evently/core/reusable_components/CustomButton.dart';
 import 'package:evently/core/reusable_components/CustomSwitch.dart';
+import 'package:evently/ui/register/screen/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/PrefsManager.dart';
@@ -20,6 +21,7 @@ class _StartScreenState extends State<StartScreen> {
   int selectedLanguage = 0;
 
   int selectedTheme = 0;
+
   @override
   Widget build(BuildContext context) {
     ThemeProvider provider = Provider.of<ThemeProvider>(context);
@@ -45,12 +47,12 @@ class _StartScreenState extends State<StartScreen> {
             ),
             SizedBox(height: 28),
             Text(
-              Stringmanager.startTitle.tr(),
+              StringManager.startTitle.tr(),
               style: Theme.of(context).textTheme.titleMedium,
             ),
             SizedBox(height: 28),
             Text(
-              Stringmanager.startDesc.tr(),
+              StringManager.startDesc.tr(),
               style: Theme.of(context).textTheme.bodySmall,
             ),
             SizedBox(height: 28),
@@ -58,7 +60,7 @@ class _StartScreenState extends State<StartScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  Stringmanager.language.tr(),
+                  StringManager.language.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
@@ -85,7 +87,7 @@ class _StartScreenState extends State<StartScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  Stringmanager.theme.tr(),
+                  StringManager.theme.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
@@ -111,7 +113,15 @@ class _StartScreenState extends State<StartScreen> {
               ],
             ),
             SizedBox(height: 28),
-            Custombutton(title: Stringmanager.begin.tr(), onClicked: () {}),
+            Custombutton(
+              title: StringManager.begin.tr(),
+              onClicked: () {
+                Navigator.pushReplacementNamed(
+                  context,
+                  RegisterScreen.routeName,
+                );
+              },
+            ),
 
             // Navigate to the next screen
           ],

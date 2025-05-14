@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/resources/AppStyle.dart';
 import 'package:evently/core/resources/ColorManager.dart';
 import 'package:evently/providers/ThemeProvider.dart';
+import 'package:evently/ui/register/screen/register_screen.dart';
 import 'package:evently/ui/splash/screen/splash_screen.dart';
 import 'package:evently/ui/start/screen/start_screen.dart';
 import 'package:flutter/material.dart';
@@ -48,8 +49,9 @@ class MyApp extends StatelessWidget {
       routes: {
         SplashScreen.routeName: (_) => SplashScreen(),
         StartScreen.routeName: (_) => StartScreen(),
+        RegisterScreen.routeName: (_) => RegisterScreen(),
       },
-      initialRoute: SplashScreen.routeName,
+      initialRoute: RegisterScreen.routeName,
     );
   }
 }
