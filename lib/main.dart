@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/resources/AppStyle.dart';
 import 'package:evently/core/resources/ColorManager.dart';
 import 'package:evently/providers/ThemeProvider.dart';
+import 'package:evently/providers/UserProvider.dart';
 import 'package:evently/ui/register/screen/register_screen.dart';
 import 'package:evently/ui/splash/screen/splash_screen.dart';
 import 'package:evently/ui/start/screen/start_screen.dart';
@@ -28,8 +29,11 @@ void main() async {
       supportedLocales: [Locale("en"), Locale("ar")],
       path: 'assets/translations',
       fallbackLocale: Locale("en"),
-      child: ChangeNotifierProvider(
-        create: (context) => ThemeProvider(mode),
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => ThemeProvider(mode)),
+          ChangeNotifierProvider(create: (context) => UserProvider()),
+        ],
         child: MyApp(),
       ),
     ),
@@ -60,10 +64,7 @@ class MyApp extends StatelessWidget {
         ForgetPassScreen.routeName: (_) => ForgetPassScreen(),
         HomeScreen.routeName: (_) => HomeScreen(),
       },
-      initialRoute:
-          FirebaseAuth.instance.currentUser != null
-              ? StartScreen.routeName
-              : HomeScreen.routeName,
+      initialRoute: LoginScreen.routeName,
     );
   }
 }

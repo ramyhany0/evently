@@ -14,5 +14,9 @@
   "login": "Login",
   "dontHaveAcc": "Don’t Have Account ?",
   "forgetpassword": "Forget Password?",
-  "resetpass": "Reset Password"
+  "age": "Age",
+  "male": "Male",
+  "female": "Female",
+  "genderHint": "Select your Gender",
+  "loginWithGoogle": "Login With Google"
 }

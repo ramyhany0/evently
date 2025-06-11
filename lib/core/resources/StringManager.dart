@@ -15,4 +15,9 @@ abstract final class StringManager {
   static const String dontHaveAcc = "dontHaveAcc";
   static const String forgetpassword = "forgetpassword";
   static const String resetpass = "resetpass";
+  static const String age = "age";
+  static const String male = "male";
+  static const String female = "female";
+  static const String genderHint = "genderHint";
+  static const String loginWithGoogle = "loginWithGoogle";
 }

@@ -1,9 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:evently/providers/UserProvider.dart';
 import 'package:evently/ui/home/screen/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:evently/model/User.dart' as MyUser;
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import '../../../core/DialogUtils.dart';
+import '../../../core/FirebaseHandler.dart';
 import '../../../core/resources/AssetManager.dart';
 import '../../../core/resources/StringManager.dart';
 import '../../../core/resources/constants.dart';
@@ -143,6 +147,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
+                SizedBox(height: 16),
+                Container(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      backgroundColor: Colors.transparent,
+                    ),
+                    onPressed: () {},
+                    label: Text(
+                      StringManager.loginWithGoogle.tr(),
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    icon: SvgPicture.asset("assets/images/googleicon.svg"),
+                  ),
+                ),
               ],
             ),
           ),
@@ -152,12 +175,17 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   login() async {
+    UserProvider provider = Provider.of<UserProvider>(context, listen: false);
     try {
       DialogUtils.showLoadingDialog(context);
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
+      MyUser.User? myUser = await FirebaseHandler.getUser(
+        credential.user?.uid ?? "",
+      );
+      provider.saveUser(myUser);
       Navigator.pop(context);
       Navigator.pushReplacementNamed(context, HomeScreen.routeName);
     } on FirebaseAuthException catch (e) {

@@ -4,7 +4,27 @@ import 'package:flutter/material.dart';
 class AppStyle {
   // static ThemeMode themeMode = ThemeMode.light;
   static ThemeData LightTheme = ThemeData(
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: ColorManager.blue,
+      shape: StadiumBorder(
+        side: BorderSide(color: ColorManager.white, width: 4),
+      ),
+    ),
     scaffoldBackgroundColor: ColorManager.lightBackground,
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: ColorManager.blue,
+      type: BottomNavigationBarType.fixed,
+      selectedLabelStyle: TextStyle(
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+        fontSize: 12,
+      ),
+      unselectedLabelStyle: TextStyle(
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+        fontSize: 12,
+      ),
+    ),
     appBarTheme: AppBarTheme(
       shadowColor: Colors.transparent,
       scrolledUnderElevation: 0,
@@ -50,6 +70,26 @@ class AppStyle {
     ),
   );
   static ThemeData DarkTheme = ThemeData(
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: ColorManager.darkBackground,
+      shape: StadiumBorder(
+        side: BorderSide(color: ColorManager.white, width: 4),
+      ),
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: ColorManager.darkBackground,
+      type: BottomNavigationBarType.fixed,
+      selectedLabelStyle: TextStyle(
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+        fontSize: 12,
+      ),
+      unselectedLabelStyle: TextStyle(
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+        fontSize: 12,
+      ),
+    ),
     appBarTheme: AppBarTheme(
       shadowColor: Colors.transparent,
       scrolledUnderElevation: 0,

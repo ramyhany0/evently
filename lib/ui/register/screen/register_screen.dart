@@ -1,12 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/DialogUtils.dart';
+import 'package:evently/core/FirebaseHandler.dart';
 import 'package:evently/core/resources/AssetManager.dart';
+import 'package:evently/core/resources/ColorManager.dart';
 import 'package:evently/core/resources/constants.dart';
 import 'package:evently/core/reusable_components/CustomButton.dart';
 import 'package:evently/core/reusable_components/CustomField.dart';
 import 'package:evently/ui/login/screen/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:evently/model/User.dart' as MyUser;
 
 import '../../../core/resources/StringManager.dart';
 import '../../home/screen/home_screen.dart';
@@ -25,8 +29,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
   late TextEditingController repasswordController;
+  late TextEditingController ageController;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
+  String selectedGender = "male";
   @override
   void initState() {
     super.initState();
@@ -34,6 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     emailController = TextEditingController();
     passwordController = TextEditingController();
     repasswordController = TextEditingController();
+    ageController = TextEditingController();
   }
 
   @override
@@ -43,6 +49,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     emailController.dispose();
     passwordController.dispose();
     repasswordController.dispose();
+    ageController.dispose();
   }
 
   @override
@@ -116,6 +123,90 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   prefixPath: AssetManager.lock,
                 ),
                 SizedBox(height: 16),
+                CustomField(
+                  keyboard: TextInputType.number,
+                  validation: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Enter your age";
+                    }
+                  },
+                  controller: ageController,
+                  obscure: false,
+                  hint: StringManager.age.tr(),
+                  prefixPath: AssetManager.person,
+                ),
+                SizedBox(height: 16),
+                DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    hintStyle: Theme.of(context).textTheme.titleSmall,
+                    hintText: StringManager.genderHint.tr(),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(color: ColorManager.grey),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(color: ColorManager.grey),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(color: ColorManager.grey),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(color: ColorManager.grey),
+                    ),
+                  ),
+                  hint: Text(StringManager.genderHint.tr()),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Should not be empty";
+                    }
+                    return null;
+                  },
+                  items: [
+                    DropdownMenuItem<String>(
+                      value: "male",
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            AssetManager.male,
+                            width: 24,
+                            height: 24,
+                            colorFilter: ColorFilter.mode(
+                              ColorManager.blue,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Text(StringManager.male.tr()),
+                        ],
+                      ),
+                    ),
+                    DropdownMenuItem<String>(
+                      value: "female",
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            AssetManager.female,
+                            width: 24,
+                            height: 24,
+                            colorFilter: ColorFilter.mode(
+                              ColorManager.blue,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Text(StringManager.female.tr()),
+                        ],
+                      ),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    selectedGender = value!;
+                  },
+                ),
+                SizedBox(height: 16),
                 Container(
                   width: double.infinity,
                   child: Custombutton(
@@ -167,6 +258,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
             email: emailController.text,
             password: passwordController.text,
           );
+      await FirebaseHandler.addUser(
+        MyUser.User(
+          name: nameController.text,
+          email: emailController.text,
+          gender: selectedGender,
+          age: ageController.text,
+          id: credential.user?.uid,
+        ),
+      );
       Navigator.pop(context);
       Navigator.pushNamedAndRemoveUntil(
         context,

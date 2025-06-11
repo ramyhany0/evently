@@ -12,4 +12,6 @@ abstract final class AssetManager {
   static const String email = "assets/images/email.svg";
   static const String lock = "assets/images/lock.svg";
   static const String forgetpass = "assets/images/forgetpass.png";
+  static const String male = "assets/images/male.svg";
+  static const String female = "assets/images/female.svg";
 }
