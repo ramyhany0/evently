@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:evently/model/User.dart' as MyUser;
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import '../../../core/DialogUtils.dart';
 import '../../../core/FirebaseHandler.dart';
@@ -156,9 +157,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      backgroundColor: Colors.transparent,
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      side: BorderSide(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 1.5,
+                      ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      signInWithGoogle();
+                    },
                     label: Text(
                       StringManager.loginWithGoogle.tr(),
                       style: TextStyle(fontSize: 20),
@@ -210,5 +218,19 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
     }
+  }
+
+  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 }
