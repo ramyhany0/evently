@@ -164,8 +164,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: 1.5,
                       ),
                     ),
-                    onPressed: () {
-                      signInWithGoogle();
+                    onPressed: () async {
+                      final user = await signInWithGoogle();
+                      if (user != null) {
+                        print('Signed in: ${user.user?.displayName}');
+                        Navigator.pushReplacementNamed(
+                          context,
+                          HomeScreen.routeName,
+                        );
+                      }
                     },
                     label: Text(
                       StringManager.loginWithGoogle.tr(),
@@ -219,7 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
   }
-
+  /*
   Future<UserCredential> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -232,5 +239,25 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     return await FirebaseAuth.instance.signInWithCredential(credential);
+  }*/
+
+  Future<UserCredential?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) return null;
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (e) {
+      print('Google Sign-In Error: $e');
+      return null;
+    }
   }
 }
